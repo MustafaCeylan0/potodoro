@@ -30,7 +30,7 @@ class BottomSheet extends ConsumerWidget {
     List<WhiteNoise> wns = ref.watch(whiteNoisesProvider);
     return SingleChildScrollView(
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
               topRight: Radius.circular(20),
@@ -69,13 +69,13 @@ class BottomSheet extends ConsumerWidget {
                                   borderRadius: BorderRadius.circular(12),
                                   image: DecorationImage(
                                     fit: BoxFit.fill,
-                                    image: wns[index].isPlaying
+                                    image: !wns[index].isPlaying
                                         ? AssetImage(wns[index].imageLoc)
                                         : AssetImage(wns[index].gifLoc),
                                   ),
                                 )),
                           ),
-                          wns[index].isPlaying
+                          !wns[index].isPlaying
                               ? Material()
                               : SliderTheme(
                                   data: SliderTheme.of(context).copyWith(
@@ -184,28 +184,29 @@ class WhiteNoise {
   String gifLoc;
   bool isPlaying;
   double vol;
+  String audioLoc;
 
   WhiteNoise(
       {required this.id,
       required this.imageLoc,
       required this.gifLoc,
       required this.isPlaying,
-      required this.vol});
+      required this.vol,
+      required this.audioLoc});
 
   WhiteNoise copyWith({int? nid, bool? nplaying, double? nvol}) {
     return WhiteNoise(
-      id: nid ?? this.id,
-      isPlaying: nplaying ?? this.isPlaying,
-      imageLoc: this.imageLoc,
-      gifLoc: this.gifLoc,
-      vol: nvol ?? this.vol,
-    );
+        id: nid ?? this.id,
+        isPlaying: nplaying ?? this.isPlaying,
+        imageLoc: this.imageLoc,
+        gifLoc: this.gifLoc,
+        vol: nvol ?? this.vol,
+        audioLoc: this.audioLoc);
   }
 }
 
 class WhiteNoisesNotifier extends StateNotifier<List<WhiteNoise>> {
 //create a new player
-  final player = AudioPlayer();
 
   WhiteNoisesNotifier()
       : super([
@@ -214,73 +215,85 @@ class WhiteNoisesNotifier extends StateNotifier<List<WhiteNoise>> {
               imageLoc: local_visuals['rain_image'],
               gifLoc: local_visuals['rain_gif'],
               isPlaying: false,
-              vol: 0.2),
+              vol: 1,
+              audioLoc: 'assets/rain_audio.m4a'),
           WhiteNoise(
               id: 1,
               imageLoc: local_visuals['river_image'],
               gifLoc: local_visuals['river_gif'],
               isPlaying: false,
-              vol: 0.2),
+              vol: 1,
+              audioLoc: 'assets/river_audio.m4a'),
           WhiteNoise(
               id: 2,
               imageLoc: local_visuals['fire_image'],
               gifLoc: local_visuals['fire_gif'],
               isPlaying: false,
-              vol: 0.2),
+              vol: 1,
+              audioLoc: 'assets/fire_audio.mp3'),
           WhiteNoise(
               id: 3,
               imageLoc: local_visuals['river_image'],
               gifLoc: local_visuals['river_gif'],
               isPlaying: false,
-              vol: 0.2),
+              vol: 1,
+              audioLoc: 'assets/river_audio.m4a'),
           WhiteNoise(
               id: 4,
               imageLoc: local_visuals['fire_image'],
               gifLoc: local_visuals['fire_gif'],
               isPlaying: false,
-              vol: 0.2),
+              vol: 1,
+              audioLoc: 'assets/fire_audio.mp3'),
           WhiteNoise(
               id: 5,
               imageLoc: local_visuals['rain_image'],
               gifLoc: local_visuals['rain_gif'],
               isPlaying: false,
-              vol: 0.2),
+              vol: 1,
+              audioLoc: 'assets/rain_audio.m4a'),
           WhiteNoise(
               id: 6,
               imageLoc: local_visuals['fire_image'],
               gifLoc: local_visuals['fire_gif'],
               isPlaying: false,
-              vol: 0.2),
+              vol: 1,
+              audioLoc: 'assets/fire_audio.mp3'),
           WhiteNoise(
               id: 7,
               imageLoc: local_visuals['rain_image'],
               gifLoc: local_visuals['rain_gif'],
               isPlaying: false,
-              vol: 0.2),
+              vol: 1,
+              audioLoc: 'assets/rain_audio.m4a'),
           WhiteNoise(
               id: 8,
               imageLoc: local_visuals['fire_image'],
               gifLoc: local_visuals['fire_gif'],
               isPlaying: false,
-              vol: 0.2),
+              vol: 1,
+              audioLoc: 'assets/fire_audio.mp3'),
           WhiteNoise(
               id: 9,
               imageLoc: local_visuals['fire_image'],
               gifLoc: local_visuals['fire_gif'],
               isPlaying: false,
-              vol: 0.2),
+              vol: 1,
+              audioLoc: 'assets/fire_audio.mp3'),
           WhiteNoise(
               id: 10,
               imageLoc: local_visuals['rain_image'],
               gifLoc: local_visuals['rain_gif'],
               isPlaying: false,
-              vol: 0.2),
+              vol: 1,
+              audioLoc: 'assets/rain_audio.m4a'),
           WhiteNoise(
               id: 11,
               imageLoc: local_visuals['fire_image'],
               gifLoc: local_visuals['fire_gif'],
               isPlaying: false,
-              vol: 0.2),
+              vol: 1,
+              audioLoc: 'assets/fire_audio.mp3'),
         ]);
 
   Future<void> toggle(int wnId) async {
@@ -292,23 +305,40 @@ class WhiteNoisesNotifier extends StateNotifier<List<WhiteNoise>> {
           // other todos are not modified
           wn,
     ];
-    if (state[wnId].isPlaying) {
-      var duration = await player.setAsset('assets/fire_audio.mp3');
-      player.play();
+    var audioPlayer = Players[wnId];
 
+    if (state[wnId].isPlaying) {
+      await audioPlayer.setAsset(state[wnId].audioLoc);
+      await audioPlayer.setLoopMode(LoopMode.one);
+      audioPlayer.play();
     } else {
-      player.stop();
+      audioPlayer.stop();
     }
   }
 
-  void changeVol(int wnId, nVol) {
+  Future<void> changeVol(int wnId, nVol) async {
+    var audioPlayer = Players[wnId];
+
     state = [
       for (final wn in state)
-        if (wn.id == wnId)
-          wn.copyWith(nvol: nVol)
-        else
-          // other todos are not modified
-          wn,
+        if (wn.id == wnId) wn.copyWith(nvol: nVol) else wn,
     ];
+    await audioPlayer.setVolume(nVol);
   }
 }
+
+//PLAYERS
+final List<AudioPlayer> Players = [
+  AudioPlayer(),
+  AudioPlayer(),
+  AudioPlayer(),
+  AudioPlayer(),
+  AudioPlayer(),
+  AudioPlayer(),
+  AudioPlayer(),
+  AudioPlayer(),
+  AudioPlayer(),
+  AudioPlayer(),
+  AudioPlayer(),
+  AudioPlayer(),
+];
