@@ -8,7 +8,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'to_do_page.dart';
 
-import 'exercise.dart'
+import 'exercise.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
