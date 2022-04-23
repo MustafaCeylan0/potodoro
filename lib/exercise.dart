@@ -24,7 +24,7 @@ final List<String> nameList = [
 ];
 final List<String> descList = [
   "Place an ankle weight around each ankle. Sit upright with good posture, lift your left knee upward toward your chest and touch your knee with your right elbow. Slowly return to the starting position, then repeat with the right leg and left elbow. This exercise will help improve your co-ordination, core strength, leg strength and hip mobility.",
-  "Sit on the edge of your chair with your arms by your sides. Extend your right leg out straight and flex your foot so that just the right heel is on the floor (keeping your foot flexed engages the muscles in the shins and ankle). Lift your leg up as high as you can without rounding your back. Hold for 3 counts then lower. Repeat with the other leg. Work up to 3 sets of 10 reps on each leg.",
+  "Sit on the edge of your chair with your arms by your sthe edge of your chair with your arms by your sthe edge of your chair with your arms by your sthe edge of your chair with your arms by your sthe edge of your chair with your arms by your sthe edge of your chair with your arms by your sthe edge of your chair with your arms by your sthe edge of your chair with your arms by your sthe edge of your chair with your arms by your sthe edge of your chair with your arms by your sthe edge of your chair with your arms by your sthe edge of your chair with your arms by your sthe edge of your chair with your arms by your sides. Extend your right leg out straight and flex your foot so that just the right heel is on the floor (keeping your foot flexed engages the muscles in the shins and ankle). Lift your leg up as high as you can without rounding your back. Hold for 3 counts then lower. Repeat with the other leg. Work up to 3 sets of 10 reps on each leg.",
   "",
 ];
 List<Map<dynamic, dynamic>> exercises_details = [
@@ -60,146 +60,133 @@ class ExercisePage extends StatefulWidget {
 }
 
 class _ExercisePageState extends State<ExercisePage> {
-  int _current = 0;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.red.withOpacity(0),
+          elevation: 0,
+        ),
         backgroundColor: buttonColor,
-        body: Column(
-          children: <Widget>[
-            Expanded(
+        body: Center(
+          child: CarouselSlider(
+            options: CarouselOptions(height: MediaQuery.of(context).size.height,
+              enableInfiniteScroll: false,
+              autoPlay: false,),
+            items: exercises.map((i) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return i;
+                },
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+List<Widget> exercises= [
+  ExerciseColumn(current: 0),
+  ExerciseColumn(current: 1),
+  ExerciseColumn(current: 2),
+];
+
+class ExerciseColumn extends StatelessWidget {
+  const ExerciseColumn({
+    Key? key,
+    required int current,
+  }) : _current = current, super(key: key);
+
+  final int _current;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 30.0),
+          child: Container(
+              width: MediaQuery.of(context).size.width*0.7,
+              height: MediaQuery.of(context).size.height*0.3,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage(imageList[_current]),
+                ),
+              )),
+        ),
+        Expanded(
+          flex: 1,
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(0, -1),
+                    blurRadius: 5,
+                    color: Colors.black12,
+                  )
+                ],
+                borderRadius: BorderRadius.all(
+                 Radius.circular(40),
+                ),
+                color: Colors.white,
+              ),
               child: Column(
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        color: Colors.white,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  ),
                   Expanded(
-                    child: Stack(
-                      children: <Widget>[
-                        Positioned.fill(
-                          child: CarouselSlider(
-                            options: CarouselOptions(
-                                enlargeCenterPage: true,
-                                enableInfiniteScroll: false,
-                                autoPlay: false,
-                                onPageChanged: (index, other) {
-                                  setState(() {
-                                    _current = index;
-                                  });
-                                }),
-                            items: imageList
-                                .map((e) => ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Stack(
-                                        fit: StackFit.expand,
-                                        children: <Widget>[
-                                          Image.asset(
-                                            e,
-                                            width: 1050,
-                                            height: 1050,
-                                            fit: BoxFit.fill,
-                                          )
-                                        ],
-                                      ),
-                                    ))
-                                .toList(),
+                    child: Container(
+                      padding:
+                      EdgeInsets.only(top: 25, left: 25, right: 25),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            nameList[_current],
+                            style: TextStyle(
+                                fontSize: 21, fontWeight: FontWeight.bold),
                           ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: RawMaterialButton(
-                            onPressed: () {},
-                            // child: Icon(
-                            //   Icons.crop_rotate,
-                            //   color: Colors.blue,
-                            // ),
-                            // shape: CircleBorder(),
-                            // elevation: 2.0,
-                            // fillColor: Colors.white,
-                            // padding: const EdgeInsets.all(3.0),
-                          ),
-                        )
-                      ],
+                          SizedBox(height: 15),
+
+                          SizedBox(height: 3),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.vertical,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Text(
+                                  descList[_current],
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 11),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(primary: Colors.cyan,shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(30.0)),minimumSize: Size(MediaQuery.of(context).size.width*0.3, MediaQuery.of(context).size.width*0.07)),
+                      onPressed: () {},
+                      child: Text("Done"),
                     ),
                   )
                 ],
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(20),
-                child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        offset: Offset(0, -1),
-                        blurRadius: 5,
-                        color: Colors.black12,
-                      )
-                    ],
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
-                      bottomLeft: Radius.circular(40),
-                      bottomRight: Radius.circular(40),
-                    ),
-                    color: Colors.white,
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      Expanded(
-                        child: Container(
-                          padding:
-                              EdgeInsets.only(top: 25, left: 25, right: 25),
-                          child: ListView(
-                            scrollDirection: Axis.vertical,
-                            children: <Widget>[
-                              Text(
-                                nameList[_current],
-                                style: TextStyle(
-                                    fontSize: 21, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 15),
-                              Text(
-                                "Description: ",
-                                style: TextStyle(fontSize: 21),
-                              ),
-                              SizedBox(height: 3),
-                              Text(
-                                descList[_current],
-                                style: TextStyle(fontSize: 17),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      RaisedButton(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 45, vertical: 11),
-                        color: Colors.cyan,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
-                        onPressed: () {},
-                        child: Text("Done"),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+
+      ],
     );
   }
 }
