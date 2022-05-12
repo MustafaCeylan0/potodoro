@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:potodoro/home.dart';
 
 import 'to_do_database.dart';
 
@@ -262,6 +263,7 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
         appBar: AppBar(
           title: const Text("To Do List"),
           actions: [
+            goButton(),
             deleteButton(),
           ],
         ),
@@ -301,6 +303,16 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
           Navigator.of(context).pop();
         },
       );
+
+  Widget goButton() => IconButton(
+    icon: const Icon(Icons.play_circle),
+    onPressed: () async {
+
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) =>
+       MyHomePage(title: note.title, session: "${note.description} Session",)));
+    },
+  );
 }
 
 final _lightColors = [
@@ -406,7 +418,7 @@ class NoteFormWidget extends StatelessWidget {
         ),
         initialValue: description,
         decoration: const InputDecoration(
-          labelText: "Enter the description",
+          labelText: "Enter the Session Amount",
           icon: Icon(Icons.description),
         ),
         validator: (title) => title != null && title.isEmpty
