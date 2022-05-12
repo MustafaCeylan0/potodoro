@@ -5,21 +5,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 
-Map gifs = {
-  'rain':
-      'https://media4.giphy.com/media/Mgq7EMQUrhcvC/giphy.gif?cid=ecf05e47ocpvoo0urelqhyttsfh2c7kwp80lvd39veowc05e&rid=giphy.gif&ct=g',
-  'fire':
-      'https://media0.giphy.com/media/ynx1sj5Wz2atO/giphy.gif?cid=ecf05e47zlfci64mq30pjzedbcm36agn2bpuwxq395uk89pk&rid=giphy.gif&ct=g',
-  'river':
-      'https://media1.giphy.com/media/2csuIJj6TmuKA/giphy.gif?cid=ecf05e47cwv9jwjteajqfytv61c35iktas0qpu9uqwmzoxzc&rid=giphy.gif&ct=g'
-};
 Map local_visuals = {
-  'rain_image': 'assets/rain_image.webp',
-  'rain_gif': 'assets/rain_gif.webp',
-  'river_image': 'assets/river_image.png',
-  'river_gif': 'assets/river_gif.webp',
-  'fire_image': 'assets/fire_image.png',
-  'fire_gif': 'assets/fire_gif.gif'
+  //brown campfire fan fireplace rain river ocean shower thunder
+  'brown_image': 'assets/wn/image/brown.jpg',
+  'brown_gif': 'assets/wn/gif/brown.webp',
+  'brown_audio': 'assets/wn/ogg/brown.ogg',
+
+  'campfire_image': 'assets/wn/image/campfire.png',
+  'campfire_gif': 'assets/wn/gif/campfire.gif',
+  'campfire_audio': 'assets/wn/ogg/campfire.ogg',
+
+  'fan_image': 'assets/wn/image/fan.jpg',
+  'fan_gif': 'assets/wn/gif/fan.webp',
+  'fan_audio': 'assets/wn/ogg/fan.ogg',
+
+  'fireplace_image': 'assets/wn/image/fireplace.jpg',
+  'fireplace_gif': 'assets/wn/gif/fireplace.webp',
+  'fireplace_audio': 'assets/wn/ogg/fireplace.ogg',
+
+  'rain_image': 'assets/wn/image/rain.webp',
+  'rain_gif': 'assets/wn/gif/rain.webp',
+  'rain_audio': 'assets/wn/ogg/rain.ogg',
+
+  'river_image': 'assets/wn/image/river.png',
+  'river_gif': 'assets/wn/gif/river.webp',
+  'river_audio': 'assets/wn/ogg/river.ogg',
+
+  'ocean_image': 'assets/wn/image/ocean.jpg',
+  'ocean_gif': 'assets/wn/gif/ocean.gif',
+  'ocean_audio': 'assets/wn/ogg/ocean.ogg',
+
+  'shower_image': 'assets/wn/image/shower.jpg',
+  'shower_gif': 'assets/wn/gif/shower.webp',
+  'shower_audio': 'assets/wn/ogg/shower.ogg',
+
+  'thunder_image': 'assets/wn/image/thunder.jpg',
+  'thunder_gif': 'assets/wn/gif/thunder.webp',
+  'thunder_audio': 'assets/wn/ogg/thunder.ogg'
 };
 
 class BottomSheet extends ConsumerWidget {
@@ -212,88 +234,67 @@ class WhiteNoisesNotifier extends StateNotifier<List<WhiteNoise>> {
       : super([
           WhiteNoise(
               id: 0,
-              imageLoc: local_visuals['rain_image'],
-              gifLoc: local_visuals['rain_gif'],
+              imageLoc: local_visuals['brown_image'],
+              gifLoc: local_visuals['brown_gif'],
               isPlaying: false,
               vol: 1,
-              audioLoc: 'assets/rain_audio.m4a'),
+              audioLoc: local_visuals['brown_audio']),
           WhiteNoise(
               id: 1,
-              imageLoc: local_visuals['river_image'],
-              gifLoc: local_visuals['river_gif'],
+              imageLoc: local_visuals['campfire_image'],
+              gifLoc: local_visuals['campfire_gif'],
               isPlaying: false,
               vol: 1,
-              audioLoc: 'assets/river_audio.m4a'),
+              audioLoc: local_visuals['campfire_audio']),
           WhiteNoise(
               id: 2,
-              imageLoc: local_visuals['fire_image'],
-              gifLoc: local_visuals['fire_gif'],
+              imageLoc: local_visuals['fan_image'],
+              gifLoc: local_visuals['fan_gif'],
               isPlaying: false,
               vol: 1,
-              audioLoc: 'assets/fire_audio.mp3'),
+              audioLoc: local_visuals['fan_audio']),
           WhiteNoise(
               id: 3,
+              imageLoc: local_visuals['fireplace_image'],
+              gifLoc: local_visuals['fireplace_gif'],
+              isPlaying: false,
+              vol: 1,
+              audioLoc: local_visuals['fireplace_audio']),
+          WhiteNoise(
+              id: 4,
+              imageLoc: local_visuals['rain_image'],
+              gifLoc: local_visuals['rain_gif'],
+              isPlaying: false,
+              vol: 1,
+              audioLoc: local_visuals['rain_audio']),
+          WhiteNoise(
+              id: 5,
               imageLoc: local_visuals['river_image'],
               gifLoc: local_visuals['river_gif'],
               isPlaying: false,
               vol: 1,
-              audioLoc: 'assets/river_audio.m4a'),
-          WhiteNoise(
-              id: 4,
-              imageLoc: local_visuals['fire_image'],
-              gifLoc: local_visuals['fire_gif'],
-              isPlaying: false,
-              vol: 1,
-              audioLoc: 'assets/fire_audio.mp3'),
-          WhiteNoise(
-              id: 5,
-              imageLoc: local_visuals['rain_image'],
-              gifLoc: local_visuals['rain_gif'],
-              isPlaying: false,
-              vol: 1,
-              audioLoc: 'assets/rain_audio.m4a'),
+              audioLoc: local_visuals['river_audio']),
           WhiteNoise(
               id: 6,
-              imageLoc: local_visuals['fire_image'],
-              gifLoc: local_visuals['fire_gif'],
+              imageLoc: local_visuals['ocean_image'],
+              gifLoc: local_visuals['ocean_gif'],
               isPlaying: false,
               vol: 1,
-              audioLoc: 'assets/fire_audio.mp3'),
+              audioLoc: local_visuals['ocean_audio']),
           WhiteNoise(
               id: 7,
-              imageLoc: local_visuals['rain_image'],
-              gifLoc: local_visuals['rain_gif'],
+              imageLoc: local_visuals['shower_image'],
+              gifLoc: local_visuals['shower_gif'],
               isPlaying: false,
               vol: 1,
-              audioLoc: 'assets/rain_audio.m4a'),
+              audioLoc: local_visuals['shower_audio']),
           WhiteNoise(
               id: 8,
-              imageLoc: local_visuals['fire_image'],
-              gifLoc: local_visuals['fire_gif'],
+              imageLoc: local_visuals['thunder_image'],
+              gifLoc: local_visuals['thunder_gif'],
               isPlaying: false,
               vol: 1,
-              audioLoc: 'assets/fire_audio.mp3'),
-          WhiteNoise(
-              id: 9,
-              imageLoc: local_visuals['fire_image'],
-              gifLoc: local_visuals['fire_gif'],
-              isPlaying: false,
-              vol: 1,
-              audioLoc: 'assets/fire_audio.mp3'),
-          WhiteNoise(
-              id: 10,
-              imageLoc: local_visuals['rain_image'],
-              gifLoc: local_visuals['rain_gif'],
-              isPlaying: false,
-              vol: 1,
-              audioLoc: 'assets/rain_audio.m4a'),
-          WhiteNoise(
-              id: 11,
-              imageLoc: local_visuals['fire_image'],
-              gifLoc: local_visuals['fire_gif'],
-              isPlaying: false,
-              vol: 1,
-              audioLoc: 'assets/fire_audio.mp3'),
+              audioLoc: local_visuals['thunder_audio']),
         ]);
 
   Future<void> toggle(int wnId) async {
@@ -329,9 +330,6 @@ class WhiteNoisesNotifier extends StateNotifier<List<WhiteNoise>> {
 
 //PLAYERS
 final List<AudioPlayer> Players = [
-  AudioPlayer(),
-  AudioPlayer(),
-  AudioPlayer(),
   AudioPlayer(),
   AudioPlayer(),
   AudioPlayer(),
