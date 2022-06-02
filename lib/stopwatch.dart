@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:potodoro/to_do_database.dart';
+import 'package:potodoro/to_do_page.dart';
 
 import '../exercise.dart';
 
 class StopWatch extends StatefulWidget {
-  const StopWatch({Key? key, required this.size}) : super(key: key);
+  StopWatch({Key? key, required this.size, this.todo}) : super(key: key);
   final double size;
+  ToDo? todo;
 
   @override
   _StopWatch createState() => _StopWatch();
@@ -18,12 +21,17 @@ class _StopWatch extends State<StopWatch> with SingleTickerProviderStateMixin {
   static const int total = 10;
   int _totalTimeSec = total; // 25*60 olacak
   bool _start = false;
+
   bool _isMessageShowed = false;
+  int sessionTimer=5;
+
 
   @override
   void initState() {
     super.initState();
 
+    ToDo? asd = widget.todo;
+    sessionTimer = int.parse(asd?.description ?? "2");
     //runTimer();
     print("initstate");
     _controller = AnimationController(
@@ -31,6 +39,24 @@ class _StopWatch extends State<StopWatch> with SingleTickerProviderStateMixin {
       lowerBound: 0.3,
       duration: const Duration(seconds: 3),
     )..stop(); //..repeat();
+  }
+
+
+  Future updateNote(int? num) async {
+    var otherNum = 0;
+    if(num!<=0 ) {
+      num = 0;
+      otherNum = 1;
+
+    }
+    final note = widget.todo!.copy(
+      isImportant: false,
+      number: otherNum,
+      title: widget.todo?.title,
+      description: num.toString(),
+    );
+
+    await ToDoDatabase.instance.updateDatabase(note);
   }
 
   runTimer() {
@@ -163,8 +189,24 @@ class _StopWatch extends State<StopWatch> with SingleTickerProviderStateMixin {
               ),
             )
           ],
-        )
+        ),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children:  [
+              Text("${widget.todo?.title} \n ${sessionTimer<=0 ? "Completed" : sessionTimer}",
+                  style: TextStyle(color: Colors.white, fontSize: 20)),
+              SizedBox(
+                width: 12,
+              ),
+              Icon(
+                Icons.play_lesson,
+                size: 32,
+                color: Colors.cyanAccent,
+              )
+            ]),
       ],
+
+
     );
   }
 
@@ -298,6 +340,7 @@ class _StopWatch extends State<StopWatch> with SingleTickerProviderStateMixin {
   }
 
   void askForExercise(bool earlier) {
+
     String message = earlier
         ? "You ended the session manually"
         : "Congrats! \nYou completed the session.";
@@ -308,6 +351,8 @@ class _StopWatch extends State<StopWatch> with SingleTickerProviderStateMixin {
         timer!.cancel();
         _isMessageShowed = true;
         _controller.reset();
+        sessionTimer --;
+        updateNote(sessionTimer);
       });
       Future.delayed(Duration.zero, () => showAlert(context, message));
       setState(() {

@@ -7,10 +7,10 @@ import 'exercise.dart';
 import 'stopwatch.dart';
 
 class MyHomePage extends StatelessWidget {
-   String title;
-   String session;
+   ToDo? todo;
+
    MyHomePage({
-    Key? key,  required this.title, required this.session
+    Key? key,   this.todo
   }) : super(key: key);
 
   @override
@@ -66,7 +66,7 @@ class MyHomePage extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              StopWatch(size: w * .8),
+              StopWatch(size: w * .8, todo: todo,),
               const SizedBox(
                 height: 12,
               ),
@@ -75,22 +75,22 @@ class MyHomePage extends StatelessWidget {
               const SizedBox(
                 height: 12,
               ),
-              Center(
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children:  [
-                      Text("$title \n $session",
-                          style: TextStyle(color: Colors.white, fontSize: 20)),
-                      SizedBox(
-                        width: 12,
-                      ),
-                      Icon(
-                        Icons.play_lesson,
-                        size: 32,
-                        color: Colors.cyanAccent,
-                      )
-                    ]),
-              ),
+              // Center(
+              //   child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children:  [
+              //         Text("${todo?.title} \n ${todo?.description}",
+              //             style: TextStyle(color: Colors.white, fontSize: 20)),
+              //         SizedBox(
+              //           width: 12,
+              //         ),
+              //         Icon(
+              //           Icons.play_lesson,
+              //           size: 32,
+              //           color: Colors.cyanAccent,
+              //         )
+              //       ]),
+              // ),
               Expanded(
                 child: Align(
                   alignment: Alignment.bottomCenter,

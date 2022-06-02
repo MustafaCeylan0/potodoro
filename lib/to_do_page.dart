@@ -129,7 +129,7 @@ class AddEditToDoPage extends StatefulWidget {
 class _AddEditToDoPageState extends State<AddEditToDoPage> {
   final _formKey = GlobalKey<FormState>();
   late bool isImportant;
-  late int number;
+  int? number;
   late String title;
   late String description;
 
@@ -138,7 +138,7 @@ class _AddEditToDoPageState extends State<AddEditToDoPage> {
     super.initState();
 
     isImportant = widget.note?.isImportant ?? false;
-    number = widget.note?.number ?? 0;
+
     title = widget.note?.title ?? '';
     description = widget.note?.description ?? '';
   }
@@ -211,14 +211,14 @@ class _AddEditToDoPageState extends State<AddEditToDoPage> {
       description: description,
     );
 
-    await ToDoDatabase.instance.update(note);
+    await ToDoDatabase.instance.updateDatabase(note);
   }
 
   Future addNote() async {
     final note = ToDo(
       title: title,
       isImportant: true,
-      number: number,
+      number: 2,
       description: description,
       createdTime: DateTime.now(),
     );
@@ -310,7 +310,7 @@ class _NoteDetailPageState extends State<NoteDetailPage> {
 
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) =>
-              MyHomePage(title: note.title, session: "${note.description} Session",)));
+              MyHomePage( todo: note,)));
     },
   );
 }
@@ -324,7 +324,7 @@ final _lightColors = [
   Colors.tealAccent.shade100
 ];
 
-class ToDoCardWidget extends StatelessWidget {
+class ToDoCardWidget extends StatefulWidget {
   const ToDoCardWidget({
     Key? key,
     required this.note,
@@ -335,10 +335,62 @@ class ToDoCardWidget extends StatelessWidget {
   final int index;
 
   @override
+  State<ToDoCardWidget> createState() => _ToDoCardWidgetState();
+}
+
+class _ToDoCardWidgetState extends State<ToDoCardWidget> {
+  @override
+
+  Future updateNote(int? num) async {
+    final note = widget.note!.copy(
+      isImportant: false,
+      number: num,
+      title: widget.note.title,
+      description: widget.note.description,
+    );
+
+    await ToDoDatabase.instance.updateDatabase(note);
+  }
+
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(note.title),
-      subtitle: Text(note.description),
+    var isChecked = false;
+    if(widget.note.number == 1) {
+
+      isChecked = true;
+    }
+    print("${widget.note.title} =  $isChecked, ${widget.note.number}");
+    return Row(
+      children: <Widget>[
+        Container(
+          height: 60,
+          width: 320,
+          child: ListTile(
+            title: Text(widget.note.title),
+            subtitle: Text(widget.note.description),
+
+          ),
+        ),
+        Checkbox(
+          value: isChecked,
+          onChanged: (value) { // This is where we update the state when the checkbox is tapped
+            setState(()  {
+              {
+
+
+
+                if(value!) {
+                  widget.note.number = 1;
+                }
+                else {
+                  widget.note.number = 0;
+                }
+
+                updateNote(widget.note.number);
+
+                print("second: ${widget.note.number}");
+              }});
+          },
+        ),  ],
     );
   }
 
@@ -359,8 +411,8 @@ class ToDoCardWidget extends StatelessWidget {
 }
 
 class NoteFormWidget extends StatelessWidget {
-  final bool? isImportant;
-  final int? number;
+  late bool? isImportant;
+  int? number;
   final String? title;
   final String? description;
   final ValueChanged<bool> onChangedImportant;
@@ -368,7 +420,7 @@ class NoteFormWidget extends StatelessWidget {
   final ValueChanged<String> onChangedTitle;
   final ValueChanged<String> onChangedDescription;
 
-  const NoteFormWidget({
+  NoteFormWidget({
     Key? key,
     this.isImportant = false,
     this.number = 0,
@@ -446,13 +498,13 @@ class NoteFields {
 
 class ToDo {
   final int? id;
-  final bool isImportant;
-  final int number;
+  late bool isImportant;
+    int? number;
   final String title;
   final String description;
   final DateTime createdTime;
 
-  const ToDo({
+  ToDo({
     this.id,
     required this.isImportant,
     required this.number,
@@ -480,8 +532,8 @@ class ToDo {
 
   static ToDo fromJson(Map<String, Object?> json) => ToDo(
     id: json[NoteFields.id] as int?,
-    isImportant: json[NoteFields.isImportant] == 1,
-    number: json[NoteFields.number] as int,
+    isImportant: json[NoteFields.isImportant] == 0,
+    number: json[NoteFields.number] as int?,
     title: json[NoteFields.title] as String,
     description: json[NoteFields.description] as String,
     createdTime: DateTime.parse(json[NoteFields.time] as String),

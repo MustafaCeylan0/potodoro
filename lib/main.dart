@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         primaryColorDark: const Color.fromRGBO(47, 69, 105, 1.0),
         backgroundColor: const Color.fromRGBO(216, 129, 146, 0.6),
       ),
-      home:  MyHomePage(title: "", session: "",),
+      home:  MyHomePage(todo: null,),
     );
   }
 }

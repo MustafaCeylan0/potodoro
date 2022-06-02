@@ -77,7 +77,7 @@ CREATE TABLE $tableToDo (
     return result.map((json) => ToDo.fromJson(json)).toList();
   }
 
-  Future<int> update(ToDo note) async {
+  Future<int> updateDatabase(ToDo note) async {
     final db = await instance.database;
 
     return db.update(
