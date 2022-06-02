@@ -13,10 +13,13 @@ final List<String> imageList = [
   "assets/chestsqueeze.gif",
   "assets/pressup.gif",
   "assets/chairdips.gif",
-  "assets/warrior2.gif",
   "assets/kneetucks.gif",
-  "assets/russiantwist.gif",
-  "assets/cheststretch.gif"
+  "assets/cheststretch.gif",
+  "assets/modplanks.jpg",
+  "assets/chairsquat.jpg",
+  "assets/modsquat.jpg",
+  "assets/heelslide.jpg",
+  "assets/calfraise.jpg"
 ];
 final List<String> nameList = [
   'Oblique Twist',
@@ -26,10 +29,13 @@ final List<String> nameList = [
   'Chest Squeeze',
   'Seated Press Up',
   "Chair Dips",
-  'Warrior 2 with Chair',
   'Knee Tucks',
-  'Russian Twist',
-  "Chest Stretch"
+  "Chest Stretch",
+  "Modified Planks",
+  "Chair Squat",
+  "Modified Squats",
+  "Heel Slides",
+  "Seated Calf Raises"
 ];
 final List<String> descList = [
   "Place an ankle weight around each ankle. Sit upright with good posture, lift your left knee upward toward your chest and touch your knee with your right elbow. Slowly return to the starting position, then repeat with the right leg and left elbow. This exercise will help improve your co-ordination, core strength, leg strength and hip mobility.",
@@ -39,10 +45,13 @@ final List<String> descList = [
   "Form a goalpost with your arms: Keep your upper arms (shoulders to elbows) parallel to the floor and your lower arms (elbows to hands) perpendicular to it. Bring your forearms together in front of your face. Press forearms together and lift arms 1 inch, squeezing through chest. Return your arms to the starting point, squeezing your shoulder blades together, and repeat as long as you can hold proper form. Your back, chest, and arms will get a workout.",
   "Sitting in a chair with your feet firmly planted on the floor, place your hands on the arm rests of the chair and press down, raising your body off the chair. Extend your arms straight and allow your hips and buttocks to lift up off the chair. Keep your head lined up over your pelvis. Allow your spine to “dangle” and unravel straight down, creating space between each vertebrae. Hold this position or push up and down to work the backs of the arms more. Repeat 4 times if holding; work up to 3 sets of 10 reps if lifting and lowering.",
   "Sit on the edge of your chair with your arms by your sides, palms on the edge of the seat, fingers over the edge. Shift your body weight forward and lower down off the chair. Hold your body suspended for 5 counts and then push up back onto the seat. Work up to 3 sets of 10 reps.",
-  "Bend your front leg to a 90-degree angle and lunge horizontally over the chair, allowing the back of the front thigh to rest fully on the chair. If the chair is too low for the back of your thigh to rest on it, place a few folded towels or blankets on the chair seat to reach desired height. Extend your back leg straight with the foot turned slightly to the side. Stretch and extend your arms straight out from the center of your chest and gaze past the middle finger of the front arm. Hold for about 10 breaths. Repeat on the opposite side, holding the pose for up to 1 minute.",
   "Sit tall (chest high and shoulders down) on the front half of your chair. Grasp the sides lightly with your hands and lean back slightly as you tighten your abs and bring your right knee up to chest height. Lower it as you raise your left knee on the next rep. Alternate sides. If you get really good at this, try lifting both knees at once, even just a few inches. Do up to 5 reps per leg.",
-  "Sit on the floor with your knees bent and feet slightly off the floor. Hold a dumbbell or other heavy object in front of you. Twist the object to the side, keeping your arms straight. Pause for a moment, then repeat on the other side. Complete at least 10 reps on each side.",
   "Sit upright in your normal chair. Sit tall away from the back of the chair.Reach behind with both arms and grasp the chair back, then press your chest upwards and forwards until you feel a stretch across your chest and the front of your shoulders.Hold for 10-20 seconds",
+  "The plank exercise is known for being one of the most popular core exercises for any age. The exercise increases tension on the core, causing the body to keep stable. Training with this movement will help in a variety of ways, one being the ability to keep good posture while seated.",
+  "This exercise should be started off with the older adult’s own body weight. If they feel like it’s too easy and their body feels good about the movement, they can add weight by carrying a medicine ball or another of-equal-to weight object.",
+  "It doesn’t matter what age we are, squatting is noted as one of the most beneficial exercises a person can perform. However, not everyone can perform a typical squat; sometimes assistance is needed.",
+  "If a senior is currently experiencing major knee pain, this might not be a suitable exercise due to pressure sustained on the joints. If a senior does have knee pain, they should keep the pressure to a minimum so as not to agitate the joint. To protect the floor from damage, grab a towel or a blanket and place it on the ground in front of the chair.",
+  "If a senior is feeling tense in their calves and it isn’t very easy to squat, calf raises might help stretch those tense muscles or joints around the lower part of the leg."
 ];
 
 void main() {
@@ -68,6 +77,23 @@ class _ExercisePageState extends State<ExercisePage> {
         appBar: AppBar(
           backgroundColor: Colors.red.withOpacity(0),
           elevation: 0,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 11),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.cyan,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0)),
+                    minimumSize: Size(MediaQuery.of(context).size.width * 0.3,
+                        MediaQuery.of(context).size.width * 0.07)),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Done"),
+              ),
+            )
+          ],
         ),
         backgroundColor: buttonColor,
         body: Center(
@@ -103,6 +129,9 @@ List<Widget> exercises = [
   ExerciseColumn(current: 8),
   ExerciseColumn(current: 9),
   ExerciseColumn(current: 10),
+  ExerciseColumn(current: 11),
+  ExerciseColumn(current: 12),
+  ExerciseColumn(current: 13),
 ];
 
 class ExerciseColumn extends StatelessWidget {
@@ -181,20 +210,6 @@ class ExerciseColumn extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 11),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          primary: Colors.cyan,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(30.0)),
-                          minimumSize: Size(
-                              MediaQuery.of(context).size.width * 0.3,
-                              MediaQuery.of(context).size.width * 0.07)),
-                      onPressed: () {},
-                      child: Text("Done"),
-                    ),
-                  )
                 ],
               ),
             ),
